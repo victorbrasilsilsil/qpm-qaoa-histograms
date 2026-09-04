@@ -1,6 +1,6 @@
 # QPM para dados histograma-valorados (SDA 2026)
 
-Código do resumo "Beyond interval bounds: quantile-parametrized regression
+Código do resumo "Quantile-Parametrized Regression
 for histogram data from quantum circuits" (Brasil, Duarte e Souza, SDA 2026).
 Estende o Parametrized Method de Souza et al. (2017, *Knowledge-Based
 Systems*) de dados intervalares para dados histograma-valorados, e aplica a
@@ -8,11 +8,7 @@ saída de circuitos QAOA como estudo de caso.
 
 ## Ideia
 
-O PM escreve qualquer ponto de um intervalo como `p(λ) = x_lo*(1-λ) + x_hi*λ`
-e deixa o próprio ajuste de mínimos quadrados encontrar o melhor λ. Isso é o
-quantil λ da uniforme em `[x_lo, x_hi]`. Trocando a uniforme por uma função
-quantil de verdade e avaliando em L níveis em vez de 2, o mesmo truque
-funciona para histogramas: PM volta a aparecer como o caso `L=2`.
+O PM escreve qualquer ponto de um intervalo como `p(λ) = x_lo*(1-λ) + x_hi*λ` e deixa o próprio ajuste de mínimos quadrados encontrar o melhor λ. Isso é o quantil λ da uniforme em `[x_lo, x_hi]`. Trocando a uniforme por uma função quantil de verdade e avaliando em L níveis em vez de 2, o mesmo truque funciona para histogramas: PM volta a aparecer como o caso `L=2`.
 
 ## Módulos
 
@@ -67,18 +63,8 @@ python plots.py      # figs/fig1_qpm.png
 
 ## Reprodutibilidade
 
-Seeds fixas por tamanho de grafo (`generate_graphs`) e por otimização
-(`run_size`), então o benchmark e os números batem entre re-execuções. Os
-resultados crus (`data.npz`, `results*.json`, `fit*.npz`, `curves.npz`) já
-estão commitados — não é preciso rodar a simulação de novo só para conferir
-os números do artigo; `analyze.py`/`stats.py`/`plots.py` já leem o `data.npz`
-salvo.
+Seeds fixas por tamanho de grafo (`generate_graphs`) e por otimização (`run_size`), então o benchmark e os números batem entre re-execuções. Os resultados crus (`data.npz`, `results*.json`, `fit*.npz`, `curves.npz`) já estão commitados — não é preciso rodar a simulação de novo só para conferir os números do artigo; `analyze.py`/`stats.py`/`plots.py` já leem o `data.npz` salvo.
 
 ## Dado degenerado, de propósito
 
-`Q_in` (espectro de cortes, entrada do circuito) e `Q_p2` (saída em p=2)
-compartilham exatamente os mesmos limites — a string toda-zeros e uma
-ótima estão sempre no suporte, então `x_hi = 1 - x_lo` nos dois lados.
-`analyze.py` confere isso (`input_hi_check`, `output_hi_check`, ambos 0) e
-é o ponto central do artigo: um modelo intervalar não distingue entrada de
-saída; toda a informação está na forma do histograma, não nos limites.
+`Q_in` (espectro de cortes, entrada do circuito) e `Q_p2` (saída em p=2) compartilham exatamente os mesmos limites — a string toda-zeros e uma ótima estão sempre no suporte, então `x_hi = 1 - x_lo` nos dois lados. `analyze.py` confere isso (`input_hi_check`, `output_hi_check`, ambos 0) e é o ponto central do artigo: um modelo intervalar não distingue entrada de saída; toda a informação está na forma do histograma, não nos limites.
